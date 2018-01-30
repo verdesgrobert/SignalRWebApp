@@ -1,4 +1,4 @@
 # SignalRWebApp
 SQL Dependency notification through SignalR
 
-Before launching run SignalRWebApp\App_Data\CreateSignalRDemoDB.sql to create data structure and insert example records
+Before launching create a database called SignalRDemo on your server and  run SignalRWebApp\App_Data\CreateSignalRDemoDB.sql to create database schema and data
