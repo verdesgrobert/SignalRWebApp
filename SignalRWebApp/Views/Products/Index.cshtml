@@ -1,0 +1,77 @@
+﻿@model SignalRWebApp.Models.MyClass
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+<div id="tbProducts">
+    @Html.Partial("IndexPartialProduct", Model.Products)
+</div>
+<div id="tbCustomers">
+    @Html.Partial("IndexPartialCustomer", Model.Customers)
+</div>
+
+@section scripts {
+
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    <script type="text/javascript">
+        var signalRHubInitialized = false;
+
+        $(function () {
+            InitializeSignalRHubStore();
+        });
+
+        function InitializeSignalRHubStore() {
+
+            if (signalRHubInitialized)
+                return;
+
+            try {
+                var clientHub = $.connection.productHub;
+
+                clientHub.client.broadcastMessage = function (message) {
+                    if (message === "Refresh")
+                        ReloadIndexPartial();
+                };
+
+                $.connection.hub.start().done(function () {
+
+                    clientHub.server.initialize($("#neProduct").val());
+                    var neCustomer = $("#neCustomer").val();
+                    if (neCustomer != undefined && neCustomer.length > 0) {
+                        clientHub.server.initialize(neCustomer);
+                    }
+                    signalRHubInitialized = true;
+                });
+
+            } catch (err) {
+                signalRHubInitialized = false;
+            }
+        };
+
+        function ReloadIndexPartial() {
+
+            $.post('@(Url.Action("IndexPartialProduct", "Products", null, Request.Url.Scheme))')
+                .done(function (response) {
+                    $("#tbProducts").html(response)
+                    if (!signalRHubInitialized)
+                        InitializeSignalRHubStore();
+                });
+            $.post('@(Url.Action("IndexPartialCustomer", "Products", null, Request.Url.Scheme))')
+                .done(function (response) {
+                    $("#tbCustomers").html(response)
+                    if (!signalRHubInitialized)
+                        InitializeSignalRHubStore();
+                });
+        };
+    </script>
+}
+
+
