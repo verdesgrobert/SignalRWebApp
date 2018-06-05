@@ -11,7 +11,6 @@ namespace SignalRWebApp.SqlServerNotifier
         public static PushSqlDependency Instance(NotifierEntity notifierEntity, Action<String> dispatcher)
         {
             return new PushSqlDependency(notifierEntity, dispatcher);
-
         }
 
         private PushSqlDependency(NotifierEntity notifierEntity, Action<String> dispatcher)
