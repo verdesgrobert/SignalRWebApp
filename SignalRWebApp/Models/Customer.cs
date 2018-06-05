@@ -18,7 +18,6 @@ namespace SignalRWebApp.Models
 
         [DataMember]
         [Display(Name = "Last name")]
-        public String LastName { get; set; }
-        
+        public String LastName { get; set; }        
     }
 }
