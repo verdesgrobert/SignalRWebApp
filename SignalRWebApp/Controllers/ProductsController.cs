@@ -42,6 +42,5 @@ namespace SignalRWebApp.Controllers
             }
             base.Dispose(disposing);
         }
-
     }
 }
